@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import UseApiPokemon from "../services/pokemonService";
 import allPokemons from "../store/actions";
-import { Loading } from "./Loading";
+import { Loading } from "../pages/Loading"
 import Pokemon from "./pokemon";
 
 const Pokemons = () => {
@@ -14,7 +14,7 @@ const Pokemons = () => {
   useEffect(() => {
         dispatch(allPokemons())
   },[dispatch]);
- 
+  loading || Loading(true)
   return (
     <div className="containPokemons">
       {loading

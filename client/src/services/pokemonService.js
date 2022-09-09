@@ -1,21 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export default function UseApiPokemon(stateReducer){
-    const [result, SetResult]= useState({loading:true, data:null})
+    const [result, setResult]= useState({loading:true, data:null})
    
-    useEffect(() => {
-      loadData(stateReducer)
-      SetResult(current=>({loading:false, data: current.results}))
-    }, [stateReducer]);
+    const load = useCallback(()=>loadData(stateReducer),[stateReducer])
 
+    useEffect(() => {
+      load()
+    }, [load]);
+    
     async function loadData(stateReducer){
       try {
-        SetResult({loading:true, data:null})
+        setResult({loading:true, data:null})
         const data= await stateReducer
-        SetResult({loading:false, data})
+        setResult({loading:false, data})
       } catch (e) {
         throw (e.message)
       }
+      
     }
     return result
 }

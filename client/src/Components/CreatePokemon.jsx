@@ -1,5 +1,23 @@
 import React from "react";
-import {createPokemons} from '../store/actions'
+import { useDispatch, useSelector } from "react-redux";
+import { createPokemons } from "../store/actions";
+
+export function validate(input) {
+  let error = {};
+  if (!input.name) {
+    error.name = "Name is required";
+  } else if (/([a-zA-Z])/.test(input.name)) {
+    error.name = "Username is invalid";
+  }
+
+  if (!input.password) {
+    error.password = "Password is required";
+  } else if (!/(?=.*[0-9])/.test(input.password)) {
+    error.password = "Password is invalid";
+  }
+
+  return error;
+}
 
 const CreatePokemon = () => {
   let [input, setInput] = React.useState({
@@ -13,24 +31,53 @@ const CreatePokemon = () => {
     img: "",
     Types: "",
   });
+  const [error, setError] = React.useState({});
+
+  const newPoke=useSelector((state)=> state.info)
+  console.log(newPoke)
 
   const handleChange = (e) => {
     e.preventdefault();
+  
     setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+
+    setError(
+      validate({
+        ...input,
+        [e.target.name]: e.target.value,
+      })
+    );
   };
 
-  let dispatch= React.useDispatch()
+  let dispatch = useDispatch();
 
+  function play() {
+    const saludo='Hola Bienvenido a la Pokedex'
+    let utterance1 = new SpeechSynthesisUtterance(saludo);
+    speechSynthesis.speak(utterance1);
+  }
+ 
   const handleSubmit = (e) => {
     e.preventdefault();
-    dispatch(createPokemons(input))
-    setInput({name: "", hp: 0, attack: 0, defense: 0, speed: 0, height: "", weight: "", img: "", Types: ""})
+    
+    dispatch(createPokemons(input));
+    setInput({
+      name: "",
+      hp: 0,
+      attack: 0,
+      defense: 0,
+      speed: 0,
+      height: 0,
+      weight: 0,
+      img: "",
+      Types: "",
+    });
   };
 
   return (
     <>
       <div>Create Pokemon</div>
-      <form onSubmit={e=>handleSubmit(e)}>
+      <form onSubmit={(e) => handleSubmit(e)}>
         <div className="Datos">
           <label>Name</label>
           <input
@@ -38,7 +85,9 @@ const CreatePokemon = () => {
             name={"name"}
             value={input.name}
             onChange={(e) => handleChange(e)}
+            className={error.name && "danger"}
           />
+          {error.username && <p className="danger">{error.username}</p>}
         </div>
         <div className="Datos">
           <label>HP</label>
@@ -91,14 +140,14 @@ const CreatePokemon = () => {
             type={"text"}
             name={"img"}
             value={input.img}
-            onChange={(e) => handleChange(e)}
+            onChange={() =>   play()}
           />
         </div>
         <div className="Datos"></div>
         <div className="Datos">
           <input
             type={"submit"}
-            value={'CREATE'}
+            value={"CREATE"}
             onChange={(e) => handleChange(e)}
           />
         </div>
