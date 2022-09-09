@@ -2,7 +2,8 @@ const axios = require("axios");
 const { Pokemon, Type } = require("../database/db");
 
 const findPokemonApi = async (pokeParam) => {
-  const listpokes = await axios.get(
+  try {
+    const listpokes = await axios.get(
     "https://pokeapi.co/api/v2/pokemon/" + pokeParam
   );
   return {
@@ -17,6 +18,9 @@ const findPokemonApi = async (pokeParam) => {
     img: listpokes.data.sprites.other.home.front_default,
     Types: listpokes.data.types.map((t) => t.type.name),
   };
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 
 const findPokemonDb = async (pokeParam) => {
@@ -31,7 +35,7 @@ const findPokemonDb = async (pokeParam) => {
 };
 
 const listAllPokemonsApi = async () => {
-  const listPokeAxios = await axios.get("https://pokeapi.co/api/v2/pokemon?offset=0&limit=100",);
+  const listPokeAxios = await axios.get("https://pokeapi.co/api/v2/pokemon?offset=0&limit=40",);
   const listURLs = listPokeAxios.data.results;
 
   let pokes = [];
@@ -53,6 +57,7 @@ const listAllPokemonsApi = async () => {
       );
     })
   );
+  pokes.sort((a,b)=> a.id - b.id)
   return pokes;
 };
 

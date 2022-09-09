@@ -1,5 +1,4 @@
 const { Pokemon, Type } = require("../database/db");
-const axios = require("axios");
 const pokemonService = require('../services/pokemonService')
 
 const getAllPokemons = async (req, res, next) => {
