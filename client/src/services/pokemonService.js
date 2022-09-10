@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+/* import { useState, useEffect, useCallback } from "react";
 
 export default function UseApiPokemon(stateReducer){
     const [result, setResult]= useState({loading:true, data:null})
@@ -20,4 +20,4 @@ export default function UseApiPokemon(stateReducer){
       
     }
     return result
-}
+} */
