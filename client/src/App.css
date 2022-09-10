@@ -7,7 +7,6 @@ body{
   background-color:#8eadcc;
 }
 nav a{
- 
   position: relative;
   display: grid;
   justify-content: space-around;
@@ -30,7 +29,7 @@ nav a:hover {
 
 .containPokemons{
   display: grid;
-  grid-template-columns: repeat(auto-fill,minmax(190px,1fr));
+  grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
   grid-column-gap: 50px;
   grid-row-gap:5px;
   transition: all 0.4s ease;
@@ -38,13 +37,13 @@ nav a:hover {
 
 .pokemon-card {
   display: grid;
-  grid-template-columns: repeat(auto-fill,minmax(190px,1fr));
-  grid-template-rows: 160px 80px 40px;
+  grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+  grid-template-rows: repeat(auto-fill,minmax(200px,1fr));
   grid-template-areas: "imagepoke" "namepoke" "types";
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25); 
   text-align: center;
   border-radius: 18px;
-  padding: 20px 10px;
+  padding: 10px 10px;
   border: 1px solid rgb(45, 9, 206);
   background-color: #8eadcc;
   transition: all 0.2s ease-in-out;
@@ -70,7 +69,6 @@ nav a:hover {
 .pokemon-name{
   grid-area: namepoke;
   text-transform: capitalize;
-  margin: 25px;
   font-size: large;
 }
 
@@ -82,13 +80,36 @@ nav a:hover {
 .pokemon-type-text {
   margin-right: 5px;
   text-transform: capitalize;
-
 }
 
 .landingImage img{
-  width: 100%;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.landingImage:hover::after{
+  transform: translateY(30px);
+}
+
+.landingImage::after{
+  content: "Bienvenido click aqui para ingresar";
+  font-size: 2rem;
+  color: #fff;
+  background-color: #16456198;
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transform: translateY(100%);
+  transition: transform 0.3s;
 }
 
 input.danger {
   border: 2px solid red;
+}
+p.danger {
+  color: red;
+  font-size: 10px;
 }

@@ -3,8 +3,7 @@ import { memo } from "react";
 const Pokemon = memo(({ name, img, Types }) => {
   return (
     <div>
-      {
-        <div className="pokemon-card">
+      {<div className="pokemon-card">
           <div className="pokemon-img-container">
             <img src={img} alt={name} className="pokemon-img" />
           </div>
