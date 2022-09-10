@@ -91,6 +91,10 @@ const createPokemon = async (
   img
 ) => {
   try {
+    const existPokeApi= await findPokemonApi(name.toLowerCase())
+    const existPokeDb= await findPokemonDb(name.toLowerCase())
+    if(existPokeApi && existPokeDb)return error.message
+
     const newPokemon = await Pokemon.create({
       name: name.toLowerCase(),
       hp,

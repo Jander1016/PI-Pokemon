@@ -32,10 +32,11 @@ const getByIdPokemon = async (req, res, next) => {
 
 const createPokemon = async (req, res, next) => {
   try {
-    const { name, hp, attack, defense, speed, height, weight, img } = req.body;
+    let { name, hp, attack, defense, speed, height, weight, img } = req.body;
     if(!name || !hp || !attack || !defense || !speed || !height || !weight )return
+    if(!img)img = 'https://fs-prod-cdn.nintendo-europe.com/media/images/08_content_images/games_6/nintendo_switch_7/nswitch_pokemonbrilliantdiamondshiningpearl/bd_dialga.png'
     const newPokemon = await pokemonService.createPokemon(name, hp, attack, defense, speed, height, weight, img)
-    res.status(201).send(newPokemon);
+    !newPokemon? res.status(406).send('Pokemon is already registered'): res.status(201).send(newPokemon);
   } catch (error) {
     next(error);
   }
