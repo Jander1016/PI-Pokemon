@@ -1,23 +1,37 @@
-/* import { useState, useEffect, useCallback } from "react";
+import { useEffect, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import allPokemons, { getPokemonDetails } from "../store/actions";
 
-export default function UseApiPokemon(stateReducer){
-    const [result, setResult]= useState({loading:true, data:null})
-   
-    const load = useCallback(()=>loadData(stateReducer),[stateReducer])
+const UseApiPokemon = () => {
+  const listPokemons = useSelector((state) => state.pokemons);
+  const dispatch = useDispatch();
+  const loadPokemons = useCallback(
+    async () => await dispatch(allPokemons()),
+    [dispatch]
+  );
+
+  useEffect(() => {
+    loadPokemons();
+  }, []);
+
+  return listPokemons;
+};
+
+export const PokemonDetail=(param) =>{
+    const findPokemon = useSelector((state) => state.pokemons);
+    const dispatch = useDispatch();
+    const loadPokemons = useCallback(
+      async () => await dispatch(getPokemonDetails(param)),
+      [dispatch,param]
+    );
+
 
     useEffect(() => {
-      load()
-    }, [load]);
-    
-    async function loadData(stateReducer){
-      try {
-        setResult({loading:true, data:null})
-        const data= await stateReducer
-        setResult({loading:false, data})
-      } catch (e) {
-        throw (e.message)
-      }
-      
-    }
-    return result
-} */
+      loadPokemons();
+    }, [loadPokemons]);
+
+    return findPokemon;
+}
+
+
+export default UseApiPokemon;

@@ -1,6 +1,3 @@
-.App {
-  text-align: center;
-}
 
 body{
   margin: 0;
@@ -17,6 +14,15 @@ nav a{
 	text-decoration:none;
 }
 
+.containNav{
+  display: grid;
+}
+.logoNav{
+  display: flex;  
+  flex-direction: row;
+  align-items: center;
+  align-content: space-between;
+}
 nav{
   width:100%;
 	margin: 0 0 5px 0;
@@ -94,7 +100,7 @@ nav a:hover {
 }
 
 .landingImage::after{
-  content: "Bienvenido click aqui para ingresar";
+  content: "Bienvenido al PI de Jander";
   font-size: 2rem;
   color: #fff;
   background-color: #16456198;
@@ -112,4 +118,45 @@ input.danger {
 p.danger {
   color: red;
   font-size: 10px;
+}
+.pokemon-card-detail{
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+  grid-template-rows: repeat(auto-fill,minmax(200px,1fr));
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25); 
+  text-align: center;
+  border-radius: 18px;
+  padding: 1px 1px;
+  border: 1px solid rgb(45, 9, 206);
+  background-color: #8eadcc;
+  transition: all 0.2s ease-in-out;
+}
+
+.pokemon-name-detail{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  background-size: cover;
+}
+
+.pokemon-img-detail{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  background-size: cover;
+  padding: 10px 10px;
+}
+
+.pokemon-img-detail:hover{
+  transform: scale(1.5);
+	cursor: pointer;
+}
+
+.pokemon-img-detail img{
+  width: 300px;
+  
 }

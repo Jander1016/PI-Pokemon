@@ -5,6 +5,7 @@ import PokemonDetails from "./Components/PokemonDetails";
 import Home from "./pages/Home";
 import Landing from "./pages/Landing";
 import NotFoundPage from "./pages/NotFoundPage";
+import SearchBar from "./pages/SearchBar";
 
 
 function App() {
@@ -13,7 +14,7 @@ function App() {
       <Switch>
         <Route path={"/home"} component={Home} />
         <Route path={"/create"} component={CreatePokemon} />
-        <Route path={"/about"} component={CreatePokemon} />
+        <Route path={"/about"} component={SearchBar} />
         <Route path={"/pokeDetails/:id"} component={PokemonDetails} />
         <Route exact path={"/"} component={Landing} />
         <Route path={"*"} component={NotFoundPage} />

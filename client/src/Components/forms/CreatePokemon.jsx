@@ -1,179 +1,184 @@
-import React from "react";
-import { useDispatch, useSelector} from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { NavBar } from "../../pages/NavBar";
 import { createPokemons } from "../../store/actions";
 import { useHistory } from "react-router-dom";
 import "./styleCreateForm.css";
 import ReadingPoke from "../../services/ReadingDetails";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCircleCheck,
-  faExclamationTriangle,
-} from "@fortawesome/free-solid-svg-icons";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import {
   ButtonCreate,
   ContainerButton,
   ErrorMessage,
-  ErrorsForms,
   Forms,
-  GroupInput,
-  IconsValidation,
-  Input,
-  Label,
   SuccessMessage,
 } from "./stylesForm";
 
-const customRegEx={
-  chars:/^[a-zA-Z]+$/g,
-  numbers: /^[1-9][0-9]?$|^100$/g,
-  imgRegex: /^https?:\/\/.+\.(jpg|jpeg|png|gif|svg)$/,
-}
-
-
-export function validate(input) {
-  let error = {};
-  if (!input.name) {
-    error.name = "Name is required";
-  } else if (!customRegEx.chars.test(input.name)) {
-    error.name = "Name is invalid";
-  }
-  return error;
-}
+import CustomInput from "./CustomInputs";
 
 const CreatePokemon = () => {
-
-  const initialForms={
-    name: "",
-    hp: 0,
-    attack: 0,
-    defense: 0,
-    speed: 0,
-    height: 0,
-    weight: 0,
-    img: "",
-    Types: "",
-  }
+  const customRegEx = {
+    chars: /^[a-zA-ZÑñ]{3,20}$/g,
+    numbers: /^[1-9][0-9]?$|^100$/g,
+  };
 
   const history = useHistory();
-/* const pokeTypes = useSelector((state) => state.types);
-  const pokemons = useSelector((state) => state.allPokemons);
-  const newPoke = useSelector((state) => state.info); */
+  //const pokeTypes = useSelector((state) => state.types);
+  //const newPoke = useSelector((state) => state.info);
 
-  let [input, setInput] = React.useState(initialForms);
-  const [error, setError] = React.useState({});
+  //console.log(pokeTypes,newPoke)
 
-  
+  const [namePoke, setNamePoke] = useState({ campo: "", okValue: null });
+  const [hpPoke, setHpPoke] = useState({ campo: "", okValue: null });
+  const [attackPoke, setAttackPoke] = useState({ campo: "", okValue: null });
+  const [defensePoke, setDefensePoke] = useState({ campo: "", okValue: null });
+  const [weightPoke, setWeightPoke] = useState({ campo: "", okValue: null });
+  const [heightPoke, setHeightPoke] = useState({ campo: "", okValue: null });
+  const [speedPoke, setSpeedPoke] = useState({ campo: "", okValue: null });
+  const [imgPoke, setImgPoke] = useState({ campo: "", okValue: null });
 
-  const handleChange = (e) => {
-    e.preventDefault();
-    setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  const [typePoke, setTypePoke] = useState({ campo: "", okValue: null });
 
-    setError(
-      validate({
-        ...input,
-        [e.target.name]: e.target.value,
-      })
-    );
-  };
+  const [formOk, setFormOk] = useState(null);
 
   let dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createPokemons(input));
-    ReadingPoke("Pokemon Creado con Exito");
-    setInput(initialForms);
-    history.push("/home");
+    if (
+      namePoke.okValue === "true" &&
+      hpPoke.okValue === "true" &&
+      speedPoke.okValue === "true" &&
+      attackPoke.okValue === "true" &&
+      defensePoke.okValue === "true" &&
+      weightPoke.okValue === "true" &&
+      heightPoke.okValue === "true"
+    ) {
+      setFormOk(true);
+      ReadingPoke("Pokemon Creado con Exito");
+      const dataPokemon={
+        name: namePoke.campo,
+        hp: hpPoke.campo,
+        attack: attackPoke.campo,
+        defense: defensePoke.campo,
+        speed: speedPoke.campo,
+        height: heightPoke.campo,
+        weight: weightPoke.campo,
+        img: imgPoke.campo,
+      }
+      dispatch(createPokemons(dataPokemon));
+      console.log(dataPokemon)
+      history.push("/home");
+    } else {
+      setFormOk(false);
+    }
   };
 
   return (
     <>
       <NavBar />
       <main>
-        <Forms onSubmit={(e) => handleSubmit(e)}>
-          <div className="Datos">
-            <Label htmlFor={"name"}>Name</Label>
-            <GroupInput>
-              <Input
-                id={"name"}
-                type={"text"}
-                name={"name"}
-                value={input.name}
-                onChange={(e) => handleChange(e)}
-                autoComplete="off"
-                className={error.name && "danger"}
-              />
-              {error.name && <p className="danger">{error.name}</p>}
-              <IconsValidation icon={faCircleCheck} />
-            </GroupInput>
-            <ErrorsForms>
-              Ingresar solo letras
-            </ErrorsForms>
-          </div>
-          <div className="Datos">
-            <Label>HP</Label>
-            <Input
-              type={"number"}
-              name={"hp"}
-              value={input.hp}
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
-          <div className="Datos">
-            <Label>Attack</Label>
-            <Input
-              type={"number"}
-              name={"attack"}
-              value={input.attack}
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
-          <div className="Datos">
-            <Label>Defense</Label>
-            <Input
-              type={"number"}
-              name={"defense"}
-              value={input.defense}
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
-          <div className="Datos">
-            <Label>Weight</Label>
-            <Input
-              type={"number"}
-              name={"weight"}
-              value={input.weight}
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
-          <div className="Datos">
-            <Label>Height</Label>
-            <Input
-              type={"number"}
-              name={"height"}
-              value={input.height}
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
-          <div className="Datos">
-            <Label>Image</Label>
-            <Input
-              type={"text"}
-              name={"img"}
-              value={input.img}
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
-          <div className="Datos"></div>
-          <ErrorMessage>
-            <p>
-              <FontAwesomeIcon icon={faExclamationTriangle} />
-              <b> Error:</b> Please complete the form correctly
-            </p>
-          </ErrorMessage>
+        <Forms onSubmit={handleSubmit}>
+          <CustomInput
+            type={"text"}
+            label={"Name"}
+            placeholder={"Intro name pokemon"}
+            name={"name"}
+            state={namePoke}
+            changeState={setNamePoke}
+            regEx={customRegEx.chars}
+            inputError="El nombre ingresado tiene que ser de 3 caracteres minimo y solo letras"
+          />
+          <CustomInput
+            type={"number"}
+            label={"HP"}
+            placeholder={"Intro hp pokemon"}
+            name={"hp"}
+            state={hpPoke}
+            changeState={setHpPoke}
+            regEx={customRegEx.numbers}
+            inputError="El hp ingesado tiene que ser solo numeros, mayor a 0 y menor a 200"
+          />
+          <CustomInput
+            type={"number"}
+            label={"Speed"}
+            placeholder={"Intro hp pokemon"}
+            name={"Speed"}
+            state={speedPoke}
+            changeState={setSpeedPoke}
+            regEx={customRegEx.numbers}
+            inputError="El hp ingesado tiene que ser solo numeros, mayor a 0 y menor a 200"
+          />
+          <CustomInput
+            type={"number"}
+            label={"Attack"}
+            placeholder={"Intro attack pokemon"}
+            name={"Attack"}
+            state={attackPoke}
+            changeState={setAttackPoke}
+            regEx={customRegEx.numbers}
+            inputError="El ataque ingresado tiene que ser solo numeros, mayor a 0 y menor a 200"
+          />
+          <CustomInput
+            type={"number"}
+            label={"Defense"}
+            placeholder={"Intro defense pokemon"}
+            name={"defense"}
+            state={defensePoke}
+            changeState={setDefensePoke}
+            regEx={customRegEx.numbers}
+            inputError="la defensa ingresado tiene que ser solo numeros, mayor a 0 y menor a 200"
+          />
+          <CustomInput
+            type={"number"}
+            label={"Weight"}
+            placeholder={"Intro weight pokemon"}
+            name={"weight"}
+            state={weightPoke}
+            changeState={setWeightPoke}
+            regEx={customRegEx.numbers}
+            inputError="El peso ingresado tiene que ser solo numeros, mayor a 0 y menor a 2000"
+          />
+          <CustomInput
+            type={"number"}
+            label={"Height"}
+            placeholder={"Intro height pokemon"}
+            name={"height"}
+            state={heightPoke}
+            changeState={setHeightPoke}
+            regEx={customRegEx.numbers}
+            inputError="La altura ingresada tiene que ser solo numeros, mayor a 0 y menor a 2000"
+          />
+          <CustomInput
+            type={"text"}
+            label={"Image"}
+            placeholder={"Intro image pokemon"}
+            name={"image"}
+            state={imgPoke}
+            changeState={setImgPoke}
+          />
+          <CustomInput
+            type={"text"}
+            label={"Type"}
+            placeholder={"Intro Types pokemon"}
+            name={"type"}
+            state={typePoke}
+            changeState={setTypePoke}
+          />
+          {formOk === false && (
+            <ErrorMessage>
+              <p>
+                <FontAwesomeIcon icon={faExclamationTriangle} />
+                <b> Error:</b> Please complete the form correctly
+              </p>
+            </ErrorMessage>
+          )}
           <ContainerButton>
             <ButtonCreate type="submit">Create Pokemon</ButtonCreate>
-            <SuccessMessage>"Pokemon Creado con Exito"</SuccessMessage>
+            {formOk === true && (
+              <SuccessMessage>"Pokemon Creado con Exito"</SuccessMessage>
+            )}
           </ContainerButton>
         </Forms>
       </main>

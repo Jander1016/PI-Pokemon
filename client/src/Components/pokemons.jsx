@@ -1,26 +1,21 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import allPokemons from "../store/actions";
 import { Loading } from "../pages/Loading";
 import Pokemon from "./Pokemon";
-import { useCallback } from "react";
+import UseApiPokemon from "../services/PokemonService";
+import { useSelector } from "react-redux";
 
 const Pokemons = () => {
+  
   const listPokemons = useSelector((state) => state.pokemons);
-  const dispatch = useDispatch();
-  const loadPokemons = useCallback(async() => await dispatch(allPokemons()), [dispatch]);
-
-  useEffect(() => {
-    loadPokemons();
-  }, [loadPokemons]);
+  
 
   return (
     <>
       <div className="containPokemons">
         {listPokemons.length === 0
           ? Loading(true)
-          : listPokemons.map((poke) => (
+          : listPokemons?.map((poke) => (
               <Pokemon
+                id={poke.id}
                 key={poke.name}
                 name={poke.name}
                 img={poke.img}
