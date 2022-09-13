@@ -1,12 +1,10 @@
 import { Loading } from "../pages/Loading";
 import Pokemon from "./Pokemon";
-import UseApiPokemon from "../services/PokemonService";
 import { useSelector } from "react-redux";
 
 const Pokemons = () => {
   
   const listPokemons = useSelector((state) => state.pokemons);
-  
 
   return (
     <>

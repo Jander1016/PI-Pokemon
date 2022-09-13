@@ -1,10 +1,9 @@
 import { NavLink } from "react-router-dom";
-import pokemon6to from "../images/pokemon6to.jpeg";
+import pika from "../images/pika.gif"
 import UseApiPokemon from "../services/PokemonService";
 
 const Landing = () => {
   UseApiPokemon();
-
   return (
     <div className="landingImage">
       <div className="cover">
@@ -17,7 +16,9 @@ const Landing = () => {
             Home
           </NavLink>
         </button>
-        <img src={pokemon6to} alt="pokeBack" />
+        <div className='gif'>
+          <img src={pika} alt="pokeBack" />
+        </div>
       </div>
     </div>
   );

@@ -30,11 +30,11 @@ export function getPokemonDetails(param) {
   };
 }
   
-export function createPokemons(info) {
+export function createPokemons(poke) {
   try {
     return {
           type: CREATE_POKEMONS,
-          payload: info,
+          payload: poke
         }
   } catch (error) {
     console.log(error.message())
@@ -53,13 +53,13 @@ export function createPokemonTypes(info) {
 }
 
 export function searchPokemon(param) {
-    return  (dispatch) =>{
-      getBackOnePokemon(param)
+    return  (function(dispatch) {
+       getBackOnePokemon(param)
       .then((poke) => {
           dispatch({ type: SEARCH_POKEMON, payload: poke })
       })
       .catch(error => console.log(error))
-    };
+    })
   
 }
 

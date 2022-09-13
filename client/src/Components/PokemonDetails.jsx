@@ -2,7 +2,7 @@ import { NavLink, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPokemonDetails } from "../store/actions";
-import { useCallback } from "react";
+import ReadingPoke from "../services/ReadingDetails";
 
 const PokemonDetails = () => {
   const { id } = useParams();
@@ -17,6 +17,8 @@ const PokemonDetails = () => {
     await dispatch(getPokemonDetails(null));
   }
 
+  const speachStats=()=> ReadingPoke(`Pokemon ${listPokemons.name}, Tipo ${listPokemons?.Types}, con un nivel de Ataque de ${listPokemons.attack} y defensa de ${listPokemons.defense} `);
+  
   return (
     <div>
       <div className="pokemon-name-detail">
@@ -27,6 +29,7 @@ const PokemonDetails = () => {
           src={listPokemons.img}
           alt={listPokemons.name}
           className="pokemon-img"
+          onClick={()=>speachStats()}
         />
       </div>
       <div className="pokemon-card-detail">

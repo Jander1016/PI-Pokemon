@@ -16,18 +16,17 @@ import {
 } from "./stylesForm";
 
 import CustomInput from "./CustomInputs";
+import axios from "axios";
 
 const CreatePokemon = () => {
   const customRegEx = {
     chars: /^[a-zA-ZÑñ]{3,20}$/g,
-    numbers: /^[1-9][0-9]?$|^100$/g,
+    powerStat: /^[1-9][0-9]?$|^100$/g,
+    heigthWith: /^[1-9][0-9][0-9]?$|^1000$/g,
   };
 
   const history = useHistory();
   //const pokeTypes = useSelector((state) => state.types);
-  //const newPoke = useSelector((state) => state.info);
-
-  //console.log(pokeTypes,newPoke)
 
   const [namePoke, setNamePoke] = useState({ campo: "", okValue: null });
   const [hpPoke, setHpPoke] = useState({ campo: "", okValue: null });
@@ -55,8 +54,7 @@ const CreatePokemon = () => {
       weightPoke.okValue === "true" &&
       heightPoke.okValue === "true"
     ) {
-      setFormOk(true);
-      ReadingPoke("Pokemon Creado con Exito");
+     
       const dataPokemon={
         name: namePoke.campo,
         hp: hpPoke.campo,
@@ -67,9 +65,26 @@ const CreatePokemon = () => {
         weight: weightPoke.campo,
         img: imgPoke.campo,
       }
-      dispatch(createPokemons(dataPokemon));
+      dispatch(createPokemons({
+        name: namePoke.campo,
+        hp: hpPoke.campo,
+        attack: attackPoke.campo,
+        defense: defensePoke.campo,
+        speed: speedPoke.campo,
+        height: heightPoke.campo,
+        weight: weightPoke.campo,
+        img: imgPoke.campo,
+      }));
+
+      axios.post('http://localhost:3001/pokemons/',dataPokemon)
+      .then(()=>{
+        setFormOk(true);
+        ReadingPoke("Pokemon Creado con Exito");
+        history.push("/home");
+      })
+      
       console.log(dataPokemon)
-      history.push("/home");
+      
     } else {
       setFormOk(false);
     }
@@ -97,8 +112,8 @@ const CreatePokemon = () => {
             name={"hp"}
             state={hpPoke}
             changeState={setHpPoke}
-            regEx={customRegEx.numbers}
-            inputError="El hp ingesado tiene que ser solo numeros, mayor a 0 y menor a 200"
+            regEx={customRegEx.powerStat}
+            inputError="El hp ingesado tiene que ser solo numeros, mayor a 0 y menor a 100"
           />
           <CustomInput
             type={"number"}
@@ -107,8 +122,8 @@ const CreatePokemon = () => {
             name={"Speed"}
             state={speedPoke}
             changeState={setSpeedPoke}
-            regEx={customRegEx.numbers}
-            inputError="El hp ingesado tiene que ser solo numeros, mayor a 0 y menor a 200"
+            regEx={customRegEx.powerStat}
+            inputError="El hp ingesado tiene que ser solo numeros, mayor a 0 y menor a 100"
           />
           <CustomInput
             type={"number"}
@@ -117,8 +132,8 @@ const CreatePokemon = () => {
             name={"Attack"}
             state={attackPoke}
             changeState={setAttackPoke}
-            regEx={customRegEx.numbers}
-            inputError="El ataque ingresado tiene que ser solo numeros, mayor a 0 y menor a 200"
+            regEx={customRegEx.powerStat}
+            inputError="El ataque ingresado tiene que ser solo numeros, mayor a 0 y menor a 100"
           />
           <CustomInput
             type={"number"}
@@ -127,8 +142,8 @@ const CreatePokemon = () => {
             name={"defense"}
             state={defensePoke}
             changeState={setDefensePoke}
-            regEx={customRegEx.numbers}
-            inputError="la defensa ingresado tiene que ser solo numeros, mayor a 0 y menor a 200"
+            regEx={customRegEx.heigthWith}
+            inputError="la defensa ingresado tiene que ser solo numeros, mayor a 0 y menor a 100"
           />
           <CustomInput
             type={"number"}
@@ -137,7 +152,7 @@ const CreatePokemon = () => {
             name={"weight"}
             state={weightPoke}
             changeState={setWeightPoke}
-            regEx={customRegEx.numbers}
+            regEx={customRegEx.heigthWith}
             inputError="El peso ingresado tiene que ser solo numeros, mayor a 0 y menor a 2000"
           />
           <CustomInput

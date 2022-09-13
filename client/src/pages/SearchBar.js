@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 
 const SearchBar = () => {
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('')
 
   const dispatch = useDispatch();
 
@@ -20,7 +20,7 @@ const SearchBar = () => {
 
   return (
     <div className="searchbar-container">
-      <form>
+      <form onSubmit={onclick}>
         <input
           placeholder="Buscar pokemon..."
           onChange={onChange}
