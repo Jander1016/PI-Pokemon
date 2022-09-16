@@ -1,13 +1,14 @@
 
 import Pokemons from "../Components/Pokemons"
-import UseApiPokemon from "../services/PokemonService";
+import UseApiPokemon from "../helpers/PokemonService";
 import { NavBar } from "./NavBar"
 
 const Home =()=> {
-    UseApiPokemon();
+    UseApiPokemon()
+
     return (
         <>
-        <NavBar />  
+        <NavBar /> 
         <Pokemons />
         </>
     )

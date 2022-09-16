@@ -6,7 +6,7 @@ const Pokemon = memo(({ id, name, img, Types }) => {
     <div>
       {<div className="pokemon-card">
           <div className="pokemon-img-container">
-            <Link className="Link" to={`/pokeDetails/${id}`}>
+            <Link className="Link" to={`/pokemons/${id}`}>
               <img src={img} alt={name} className="pokemon-img" />
             </Link >
           </div>
@@ -15,7 +15,10 @@ const Pokemon = memo(({ id, name, img, Types }) => {
           </div>
           <div className="pokemon-type">
             Type:
-            {Types.map((t) => (<span key={t} className="pokemon-type-text">  {t} </span>))}
+            {(id.length > 12)
+          ?Types?.map((t,i) => (<span key={i}> <b>{t.name}</b> </span>))
+          :Types?.map((t,i) => (<span key={i}> <b>{t}</b> </span>))
+          }
           </div>
         </div>
       }

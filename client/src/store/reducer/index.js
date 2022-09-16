@@ -1,4 +1,12 @@
-import {ALL_POKEMONS, CREATE_POKEMONS, CREATE_POKEMONTYPES, SEARCH_POKEMON, DETAILS_POKEMON} from '../actions'
+import {ALL_POKEMONS, 
+    CREATE_POKEMONS, 
+    CREATE_POKEMONTYPES, 
+    SEARCH_POKEMON, 
+    DETAILS_POKEMON,
+     FILTER_POKEMONS_ORIGIN,
+     FILTER_POKEMONS_ATTACK,
+     SORT_POKEMONS 
+    } from '../actions'
 
 const initialSatate={
     pokemons: [],
@@ -6,7 +14,8 @@ const initialSatate={
     createPokemonTypes:[],
     searchPokemon:[],
     detailsPokemon:[],
-    filteredPokemons: []
+    filteredPokemonsOrigin: [],
+    dataAllPokemons:[]
 }
 
 export default function reducer(state=initialSatate, action){
@@ -14,7 +23,8 @@ export default function reducer(state=initialSatate, action){
         case ALL_POKEMONS:
             return {
             ...state,
-            pokemons: action.payload.data
+            pokemons: action.payload.data,
+            dataAllPokemons: action.payload.data
         }  
         case DETAILS_POKEMON:
             return {
@@ -34,7 +44,74 @@ export default function reducer(state=initialSatate, action){
         case SEARCH_POKEMON:
             return {
             ...state,
-            searchPokemon: action.payload.data
+            pokemons: action.payload.data
+        } 
+        case FILTER_POKEMONS_ORIGIN:
+            const dataAllPokemons=state.dataAllPokemons
+            const statusFiltered = action.payload === "all" 
+            ? dataAllPokemons
+            : action.payload === "papi" 
+                ? dataAllPokemons.filter(poke => typeof poke.id ==='number' )
+                : dataAllPokemons.filter(poke => typeof poke.id === 'string' ) 
+
+            return {
+            ...state,
+            pokemons: statusFiltered
+        } 
+        case FILTER_POKEMONS_ATTACK:
+            const dataAllPokemons2=state.dataAllPokemons
+            const statusFilteredAttack = action.payload === "maxAttack" 
+            ? dataAllPokemons2.sort((previus,next) => {
+                if (next.attack > previus.attack) {
+                  return 1;
+                }
+                if (next.attack < previus.attack) {
+                  return -1;
+                }
+                return 0;
+              }) 
+            : action.payload === "minAttack" 
+                ? dataAllPokemons2.sort((previus,next) => {
+                    if (previus.attack > next.attack) {
+                      return 1;
+                    }
+                    if (previus.attack < next.attack) {
+                      return -1;
+                    }
+                    return 0;
+                  }) 
+                : dataAllPokemons2
+
+            return {
+            ...state,
+            pokemons: statusFilteredAttack
+        } 
+        case SORT_POKEMONS:
+            const dataAllPokemons3=state.dataAllPokemons
+            const statusFilteredSort = action.payload === "all" 
+            ? dataAllPokemons3
+            : action.payload === "desc" 
+                ? dataAllPokemons3.sort((previus,next) =>  {
+                    if (previus.name > next.name) {
+                      return 1;
+                    }
+                    if (previus.name < next.name) {
+                      return -1;
+                    }
+                    return 0;
+                  })
+                : dataAllPokemons3.sort((previus,next) =>  {
+                    if (previus.name > next.name) {
+                      return 1;
+                    }
+                    if (previus.name < next.name) {
+                      return -1;
+                    }
+                    return 0;
+                  })
+            return {
+            ...state,
+            pokemons: statusFilteredSort
         } 
         default:    
             return state;

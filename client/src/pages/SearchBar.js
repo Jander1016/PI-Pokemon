@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { searchPokemon } from "../store/actions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Loading } from "./Loading";
+import Pokemon from "../Components/Pokemon";
 
 const SearchBar = () => {
 
   const [search, setSearch] = useState('')
+
+  const pokeFind=useSelector((state) => state.searchPokemon);
 
   const dispatch = useDispatch();
 
@@ -19,6 +23,7 @@ const SearchBar = () => {
   };
 
   return (
+    <>
     <div className="searchbar-container">
       <form onSubmit={onclick}>
         <input
@@ -27,9 +32,14 @@ const SearchBar = () => {
           type="text"
           value={search}
         />
-        <button onClick={onClick}>Buscar</button>
+        <button onClick={onClick}>
+           Buscar
+        </button>
       </form>
     </div>
+    
+    </>
+    
   );
 };
 

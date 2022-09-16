@@ -4,7 +4,7 @@ import { NavBar } from "../../pages/NavBar";
 import { createPokemons } from "../../store/actions";
 import { useHistory } from "react-router-dom";
 import "./styleCreateForm.css";
-import ReadingPoke from "../../services/ReadingDetails";
+import ReadingPoke from "../../helpers/ReadingDetails";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -22,7 +22,7 @@ const CreatePokemon = () => {
   const customRegEx = {
     chars: /^[a-zA-ZÑñ]{3,20}$/g,
     powerStat: /^[1-9][0-9]?$|^100$/g,
-    heigthWith: /^[1-9][0-9][0-9]?$|^1000$/g,
+    heigthWith: /^[1-9][0-9][0-9][0-9]?$|^2000$/g,
   };
 
   const history = useHistory();
@@ -65,26 +65,14 @@ const CreatePokemon = () => {
         weight: weightPoke.campo,
         img: imgPoke.campo,
       }
-      dispatch(createPokemons({
-        name: namePoke.campo,
-        hp: hpPoke.campo,
-        attack: attackPoke.campo,
-        defense: defensePoke.campo,
-        speed: speedPoke.campo,
-        height: heightPoke.campo,
-        weight: weightPoke.campo,
-        img: imgPoke.campo,
-      }));
-
-      axios.post('http://localhost:3001/pokemons/',dataPokemon)
+      dispatch(createPokemons(dataPokemon));
+      axios.post('http://localhost:3001/pokemons/', dataPokemon)
       .then(()=>{
         setFormOk(true);
         ReadingPoke("Pokemon Creado con Exito");
         history.push("/home");
       })
-      
-      console.log(dataPokemon)
-      
+  
     } else {
       setFormOk(false);
     }
@@ -118,8 +106,8 @@ const CreatePokemon = () => {
           <CustomInput
             type={"number"}
             label={"Speed"}
-            placeholder={"Intro hp pokemon"}
-            name={"Speed"}
+            placeholder={"Intro speed pokemon"}
+            name={"apeed"}
             state={speedPoke}
             changeState={setSpeedPoke}
             regEx={customRegEx.powerStat}
@@ -129,7 +117,7 @@ const CreatePokemon = () => {
             type={"number"}
             label={"Attack"}
             placeholder={"Intro attack pokemon"}
-            name={"Attack"}
+            name={"attack"}
             state={attackPoke}
             changeState={setAttackPoke}
             regEx={customRegEx.powerStat}
@@ -142,7 +130,7 @@ const CreatePokemon = () => {
             name={"defense"}
             state={defensePoke}
             changeState={setDefensePoke}
-            regEx={customRegEx.heigthWith}
+            regEx={customRegEx.powerStat}
             inputError="la defensa ingresado tiene que ser solo numeros, mayor a 0 y menor a 100"
           />
           <CustomInput
@@ -162,14 +150,14 @@ const CreatePokemon = () => {
             name={"height"}
             state={heightPoke}
             changeState={setHeightPoke}
-            regEx={customRegEx.numbers}
-            inputError="La altura ingresada tiene que ser solo numeros, mayor a 0 y menor a 2000"
+            regEx={customRegEx.powerStat}
+            inputError="La altura ingresada tiene que ser solo numeros, mayor a 0 y menor a 100"
           />
           <CustomInput
             type={"text"}
             label={"Image"}
             placeholder={"Intro image pokemon"}
-            name={"image"}
+            name={"img"}
             state={imgPoke}
             changeState={setImgPoke}
           />

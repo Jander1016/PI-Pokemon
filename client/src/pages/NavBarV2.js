@@ -3,7 +3,7 @@ import pika from "../images/pika.gif";
 import "../styles/styleLanding.css";
 import UseApiPokemon from "../helpers/PokemonService";
 
-export const Landing = () => {
+export const NavBarV = () => {
   UseApiPokemon();
   let imgUrl =
     "https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png";
@@ -48,5 +48,3 @@ export const Landing = () => {
     </div>
   );
 };
-
-export default Landing;
