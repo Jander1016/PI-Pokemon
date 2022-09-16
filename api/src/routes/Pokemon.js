@@ -1,12 +1,14 @@
 const { Router } = require("express");
+const apicache= require('apicache')
+const { getAllPokemons, getByIdPokemon, createPokemon, getAllTypes} = require('../controllers/pokemonController')
+
 const router = Router();
-const { getAllPokemons, getByIdPokemon, createPokemon, createPokemonType, getAllTypes} = require('../controllers/pokemonController')
+const cache= apicache.middleware;
 
 router
-  .get("/pokemons", getAllPokemons)
+  .get("/pokemons",cache("5 minutes"), getAllPokemons)
   .get("/pokemons/:idPokemon", getByIdPokemon)
   .post("/pokemons", createPokemon)
   .get("/types", getAllTypes)
-  .post("/pokemons/:idPokemon/types/:idType", createPokemonType)
 
 module.exports = router;
