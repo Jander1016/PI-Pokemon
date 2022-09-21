@@ -4,7 +4,7 @@ import CreatePokemon from "./Components/forms/CreatePokemon";
 import PokemonDetails from "./Components/PokemonDetails";
 import Home from "./pages/Home";
 import Landing from "./pages/Landing";
-import { NavBarV } from "./pages/NavBarV2";
+// import { NavBarV } from "./pages/NavBarV2";
 import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
       <Switch>
         <Route path={"/home"} component={Home} />
         <Route path={"/create"} component={CreatePokemon} />
-        <Route path={"/about"} component={NavBarV} />
+        {/* <Route path={"/about"} component={} /> */}
         <Route path={"/pokemons/:id"} component={PokemonDetails} />
         <Route exact path={"/"} component={Landing} />
         <Route path={"*"} component={NotFoundPage} />

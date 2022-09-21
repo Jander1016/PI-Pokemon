@@ -1,10 +1,10 @@
 import { NavLink } from "react-router-dom";
 import pika from "../images/pika.gif";
 import "../styles/styleLanding.css";
-import UseApiPokemon from "../helpers/PokemonService";
+// import UseApiPokemon from "../helpers/PokemonService";
 
 export const Landing = () => {
-  UseApiPokemon();
+  // UseApiPokemon();
   let imgUrl =
     "https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png";
 
@@ -16,7 +16,7 @@ export const Landing = () => {
 
       <section className="hero__main container">
         <div className="hero__texts">
-          <h1 className="hero__title">Hello! My name is Jander</h1>
+          <h1 className="hero__title">Hello! My name is Jander Gomez</h1>
           <p className="hero__subtittle">
             I developed this project for you, enjoyment!!
           </p>

@@ -15,7 +15,7 @@ const Pokemon = memo(({ id, name, img, Types }) => {
           </div>
           <div className="pokemon-type">
             Type:
-            {(id.length > 12)
+            {(typeof id === 'string')
           ?Types?.map((t,i) => (<span key={i}> <b>{t.name}</b> </span>))
           :Types?.map((t,i) => (<span key={i}> <b>{t}</b> </span>))
           }

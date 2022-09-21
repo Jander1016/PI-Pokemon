@@ -26,12 +26,13 @@ const CustomInputs = ({
   
   const validation = () => {
     if (regEx) {
-      if (regEx.test(state.campo)) {
+      if(regEx.test(state.campo)) {
         changeState(()=>({ ...state, okValue: "true" }));
       } else {
         changeState(()=>({ ...state, okValue: "false" }));
       }
     }
+
   };
 
   return (

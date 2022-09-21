@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { searchPokemon } from "../store/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { Loading } from "./Loading";
-import Pokemon from "../Components/Pokemon";
 
 const SearchBar = () => {
 
   const [search, setSearch] = useState('')
 
-  const pokeFind=useSelector((state) => state.searchPokemon);
+  const pokeFind=useSelector((state) => state.pokemons);
 
   const dispatch = useDispatch();
 

@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavBar } from "../../pages/NavBar";
-import { createPokemons } from "../../store/actions";
+import { createPokemons, getTypesPokemon } from "../../store/actions";
 import { useHistory } from "react-router-dom";
 import "./styleCreateForm.css";
 import ReadingPoke from "../../helpers/ReadingDetails";
@@ -12,6 +12,7 @@ import {
   ContainerButton,
   ErrorMessage,
   Forms,
+  Label,
   SuccessMessage,
 } from "./stylesForm";
 
@@ -26,7 +27,7 @@ const CreatePokemon = () => {
   };
 
   const history = useHistory();
-  //const pokeTypes = useSelector((state) => state.types);
+  const listTypes = useSelector((state) => state.typesPokemons);
 
   const [namePoke, setNamePoke] = useState({ campo: "", okValue: null });
   const [hpPoke, setHpPoke] = useState({ campo: "", okValue: null });
@@ -37,11 +38,34 @@ const CreatePokemon = () => {
   const [speedPoke, setSpeedPoke] = useState({ campo: "", okValue: null });
   const [imgPoke, setImgPoke] = useState({ campo: "", okValue: null });
 
-  const [typePoke, setTypePoke] = useState({ campo: "", okValue: null });
+  const [error, setError]= useState('');
+
+  const [typePoke, setTypePoke] = useState( [] );
 
   const [formOk, setFormOk] = useState(null);
 
   let dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getTypesPokemon());
+  }, [dispatch]);
+
+  const handleSelect = (e) => {
+    e.preventDefault();
+    console.log(typePoke.length)
+    console.log(typePoke)
+    if( typePoke.length < 2 ){
+      setTypePoke([...typePoke,e.target.value ]);
+      console.log(typePoke)
+    }else{
+      setError('only 2 types max')
+    }
+  };
+
+  const handleDelete=(e) =>{
+    e.preventDefault();
+    typePoke.filter(t=> t != e.target.value)
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -54,8 +78,7 @@ const CreatePokemon = () => {
       weightPoke.okValue === "true" &&
       heightPoke.okValue === "true"
     ) {
-     
-      const dataPokemon={
+      const dataPokemon = {
         name: namePoke.campo,
         hp: hpPoke.campo,
         attack: attackPoke.campo,
@@ -64,15 +87,14 @@ const CreatePokemon = () => {
         height: heightPoke.campo,
         weight: weightPoke.campo,
         img: imgPoke.campo,
-      }
+        Types: typePoke
+      };
       dispatch(createPokemons(dataPokemon));
-      axios.post('http://localhost:3001/pokemons/', dataPokemon)
-      .then(()=>{
+      axios.post("http://localhost:3001/pokemons/", dataPokemon).then(() => {
         setFormOk(true);
         ReadingPoke("Pokemon Creado con Exito");
         history.push("/home");
-      })
-  
+      });
     } else {
       setFormOk(false);
     }
@@ -141,7 +163,7 @@ const CreatePokemon = () => {
             state={weightPoke}
             changeState={setWeightPoke}
             regEx={customRegEx.heigthWith}
-            inputError="El peso ingresado tiene que ser solo numeros, mayor a 0 y menor a 2000"
+            inputError="El peso ingresado tiene que ser solo numeros, mayor a 99 y menor a 9999"
           />
           <CustomInput
             type={"number"}
@@ -161,14 +183,30 @@ const CreatePokemon = () => {
             state={imgPoke}
             changeState={setImgPoke}
           />
-          <CustomInput
-            type={"text"}
-            label={"Type"}
-            placeholder={"Intro Types pokemon"}
-            name={"type"}
-            state={typePoke}
-            changeState={setTypePoke}
-          />
+          <div>
+            <Label htmlFor={typePoke}>
+              {"Pokemon Types"}
+            </Label>
+            <select onChange={(e) => handleSelect(e)}>
+              <option value={"all"}>Selected all types </option>
+              {listTypes?.map((t) => (
+                <option key={t.name} value={t.name}>
+                  {t.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div> 
+            <p>Type 1  <input type='text' name = 'type1' value={typePoke[0]} /></p>
+              <p>Type 2  <input type='text' name = 'type2' value={typePoke[1]} /></p>
+           </div>
+         { error && (
+           <ErrorMessage>
+              <p>
+                {error}
+              </p>
+            </ErrorMessage>)
+            }
           {formOk === false && (
             <ErrorMessage>
               <p>

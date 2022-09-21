@@ -3,7 +3,9 @@ import Pokemon from "./Pokemon";
 import Pagination from "../helpers/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import allPokemons, {
+  filterdPokemonTypes,
   filterPokesOrigin,
+  getTypesPokemon,
   sortPokemons,
   sortPokesAtack,
 } from "../store/actions";
@@ -11,6 +13,8 @@ import { useEffect, useState } from "react";
 import SearchBar from "../pages/SearchBar";
 
 const Pokemons = () => {
+  const listTypes = useSelector((state) => state.typesPokemons);
+
   const listPokemons = useSelector((state) => state.pokemons);
   const dispatch = useDispatch();
 
@@ -19,14 +23,19 @@ const Pokemons = () => {
 
   const [sortPoke, setSortPoke] = useState("");
   const [sortPokeAttack, setSortPokeAttack] = useState("");
+  const [sortPokeTypes, setSortPokeTypes] = useState("");
 
   const lastItem = currentPage * items;
   const firstItem = lastItem - items;
   const dataFromApi = listPokemons.slice(firstItem, lastItem);
 
   const paginated = (pageNumber) => setCurrentPage(pageNumber);
+  
 
-  useEffect(() => dispatch(allPokemons()), [dispatch]);
+  useEffect(() => {
+    dispatch(allPokemons())
+    dispatch(getTypesPokemon())
+  }, [dispatch]);
 
   const handlerFilterPokemons = (e) => {
     e.preventDefault();
@@ -44,6 +53,13 @@ const Pokemons = () => {
   const handlerSortAtackPokemons = (e) => {
     e.preventDefault();
     dispatch(sortPokesAtack(e.target.value));
+    setCurrentPage(1);
+    setSortPokeAttack(`Sorted ${e.target.value}`);
+  };
+
+  const handlerFilterPokeTypes = (e) => {
+    e.preventDefault();
+    dispatch(filterdPokemonTypes(e.target.value));
     setCurrentPage(1);
     setSortPokeAttack(`Sorted ${e.target.value}`);
   };
@@ -76,9 +92,14 @@ const Pokemons = () => {
           </select>
         </div>
         <div>
-          <select onChange={(e) => handlerFilterPokemons(e)}>
-            <option value={"all"}>Select Type </option>
-            <option value={"papi"}>Pokemons API</option>
+          <select  onChange={(e) => handlerFilterPokeTypes(e)}>
+             <option value={"all"}>Select all Types </option>
+            {
+              listTypes?.map(t=> 
+                <option key={t.name} value={t.name}>{t.name}</option>
+              )
+            }
+            
           </select>
         </div>
       </div>
@@ -100,7 +121,7 @@ const Pokemons = () => {
                 name={poke.name}
                 img={poke.img}
                 Types={
-                  poke.id.length > 12
+                 (typeof listPokemons.id === 'string')
                     ? poke.Types.map((t) => t.name)
                     : poke.Types
                 }
