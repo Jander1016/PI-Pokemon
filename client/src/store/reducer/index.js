@@ -53,7 +53,7 @@ export default function reducer(state = initialSatate, action) {
       const dataAllPokemons = state.dataAllPokemons;
       const statusFiltered =
         action.payload === "all"
-          ? dataAllPokemons
+          ? state.dataAllPokemons
           : action.payload === "papi"
           ? dataAllPokemons.filter((poke) => typeof poke.id === "number")
           : dataAllPokemons.filter((poke) => typeof poke.id === "string");
@@ -85,7 +85,7 @@ export default function reducer(state = initialSatate, action) {
               }
               return 0;
             })
-          : dataAllPokemons2;
+          : state.dataAllPokemons;
 
       return {
         ...state,
@@ -95,7 +95,7 @@ export default function reducer(state = initialSatate, action) {
       const dataAllPokemons3 = state.dataAllPokemons;
       const statusFilteredSort =
         action.payload === "all"
-          ? dataAllPokemons3
+          ?  state.dataAllPokemons
           : action.payload === "desc"
           ? dataAllPokemons3.sort((previus, next) => {
               if (previus.name < next.name) {

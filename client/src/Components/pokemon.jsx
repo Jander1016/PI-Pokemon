@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
 
-const Pokemon = memo(({ id, name, img, Types }) => {
+const Pokemon = memo(({ id, name, img, Types, attack}) => {
   return (
     <div>
       {<div className="pokemon-card">
@@ -13,6 +13,9 @@ const Pokemon = memo(({ id, name, img, Types }) => {
           <div className="pokemon-name">
               <h3>{name}</h3>
           </div>
+          <div className="pokemon-status">
+             Atacck: <h3>{attack}</h3>
+          </div>
           <div className="pokemon-type">
             Type:
             {(typeof id === 'string')
@@ -20,6 +23,7 @@ const Pokemon = memo(({ id, name, img, Types }) => {
           :Types?.map((t,i) => (<span key={i}> <b>{t}</b> </span>))
           }
           </div>
+         
         </div>
       }
     </div>

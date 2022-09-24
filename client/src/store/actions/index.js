@@ -12,7 +12,6 @@ export const GET_TYPES = "GET_TYPES";
 export const FILTER_TYPES = "FILTER_TYPES";
 export const FILTER_COMBINE = "FILTER_COMBINE";
 
-// const getBackPokemons = () => axios.get("http://localhost:3001/pokemons");
 const getBackOnePokemon = async (param) =>
   axios.get("http://localhost:3001/pokemons?name=" + param);
 const getDetailsPokemon = async (param = "") =>

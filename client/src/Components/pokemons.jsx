@@ -54,14 +54,14 @@ const Pokemons = () => {
     e.preventDefault();
     dispatch(sortPokesAtack(e.target.value));
     setCurrentPage(1);
-    setSortPokeAttack(`Sorted ${e.target.value}`);
+    setSortPoke(`Sorted ${e.target.value}`);
   };
 
   const handlerFilterPokeTypes = (e) => {
     e.preventDefault();
     dispatch(filterdPokemonTypes(e.target.value));
     setCurrentPage(1);
-    setSortPokeAttack(`Sorted ${e.target.value}`);
+    setSortPoke(`Sorted ${e.target.value}`);
   };
 
   return (
@@ -120,6 +120,7 @@ const Pokemons = () => {
                 key={poke.id}
                 name={poke.name}
                 img={poke.img}
+                attack={poke.attack}
                 Types={
                  (typeof listPokemons.id === 'string')
                     ? poke.Types.map((t) => t.name)
