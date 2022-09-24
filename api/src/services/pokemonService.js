@@ -37,32 +37,26 @@ const findPokemonDb = async (pokeParam) => {
 };
 
 const listAllPokemonsApi = async () => {
-  const listPokeAxios = await axios.get(
-    'https://pokeapi.co/api/v2/pokemon?limit=100'
-  );
-  const listURLs = listPokeAxios.data.results;
-
-  let pokes = [];
-  await axios.all(
-    listURLs.map((p) => {
-      return axios.get(p.url).then((poke) =>
-        pokes.push({
-          id: poke.data.id,
-          name: poke.data.name,
-          hp: poke.data.stats[0].base_stat,
-          attack: poke.data.stats[1].base_stat,
-          defense: poke.data.stats[2].base_stat,
-          speed: poke.data.stats[5].base_stat,
-          height: poke.data.height,
-          weight: poke.data.weight,
-          img: poke.data.sprites.other.home.front_default,
-          Types: poke.data.types.map((t) => t.type.name),
-        })
-      );
-    })
-  );
-  pokes.sort((a, b) => a.id - b.id);
-  return pokes;
+  try {
+    const listPokeAxios = await axios.get(
+      "https://pokeapi.co/api/v2/pokemon?limit=100"
+    );
+    let allPokes = [];
+    await Promise.all(
+      listPokeAxios.data.results.map((item) => {
+        const itemsUrl = item.url.split("/");
+        const id = itemsUrl[6];
+        let poke = findPokemonApi(id)
+          .then((p) => allPokes.push(p))
+          .catch((e) => {});
+        return poke;
+      })
+    );
+    allPokes.sort((a, b) => a.id - b.id);
+    return allPokes;
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 
 const listAllPokemonsDb = async () => {
@@ -76,11 +70,15 @@ const listAllPokemonsDb = async () => {
 };
 
 const listAllPokemonsApiDb = async () => {
-  const listPokeDb = await listAllPokemonsDb();
-  const listPokeApi = await listAllPokemonsApi();
-  const listData = [...listPokeApi, ...listPokeDb];
-  DATA_API_DB = listData;
-  return listData;
+  try {
+    const listPokeDb = await listAllPokemonsDb();
+    const listPokeApi = await listAllPokemonsApi();
+    const listData = [...listPokeApi, ...listPokeDb];
+    DATA_API_DB = listData;
+    return listData;
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 
 const getByIdPokemon = async (idPokemon) => {
@@ -95,7 +93,6 @@ const getByIdPokemon = async (idPokemon) => {
       );
     }
     return pokemonFound;
-
   } catch (error) {
     console.log(error.message);
   }

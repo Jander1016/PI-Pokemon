@@ -1,4 +1,3 @@
-const { Pokemon, Type } = require("../database/db");
 const pokemonService = require("../services/pokemonService");
 
 const getAllPokemons = async (req, res, next) => {
@@ -11,12 +10,12 @@ const getAllPokemons = async (req, res, next) => {
       );
       !pokeName
         ? res.status(404).send("Not found Pokemon")
-        : res.status(200).send(pokeName);
+        : res.status(200).json(pokeName);
     } else {
-      res.status(200).send(listPokemonsAll);
+      res.status(200).json(listPokemonsAll);
     }
   } catch (error) {
-    next(error);
+    next(error);  
   }
 };
 
@@ -24,7 +23,6 @@ const getByIdPokemon = async (req, res, next) => {
   try {
     const { idPokemon } = req.params;
     const pokemonFoundId = await pokemonService.getByIdPokemon(idPokemon);
-    console.log(pokemonFoundId[0])
     !pokemonFoundId[0]
       ? res.status(404).send("Not found Pokemon")
       : res.status(200).json(pokemonFoundId[0]);
@@ -74,5 +72,5 @@ module.exports = {
   getAllPokemons,
   getByIdPokemon,
   createPokemon,
-  getAllTypes,
+  getAllTypes
 };

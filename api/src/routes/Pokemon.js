@@ -4,9 +4,9 @@ const { getAllPokemons, getByIdPokemon, createPokemon, getAllTypes} = require('.
 
 const router = Router();
 const cache= apicache.middleware;
-
+// ,cache("2 minutes")
 router
-  .get("/pokemons",cache("5 minutes"), getAllPokemons)
+  .get("/pokemons",cache("2 minutes"), getAllPokemons)
   .get("/pokemons/:idPokemon", getByIdPokemon)
   .post("/pokemons", createPokemon)
   .get("/types", getAllTypes)
