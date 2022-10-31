@@ -62,10 +62,10 @@ const CreatePokemon = () => {
     }
   };
 
-  const handleDelete=(e) =>{
-    e.preventDefault();
-    typePoke.filter(t=> t != e.target.value)
-  }
+  // const handleDelete=(e) =>{
+  //   e.preventDefault();
+  //   typePoke.filter(t=> t !== e.target.value)
+  // }
 
   const handleSubmit = (e) => {
     e.preventDefault();

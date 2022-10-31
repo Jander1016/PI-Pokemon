@@ -134,19 +134,10 @@ export default function reducer(state = initialSatate, action) {
       const dataCombinedPokemons = state.dataAllPokemons;
       const statusFilteredCombined = dataCombinedPokemons
         .sort((previus, next) => {
-          if (previus.name > next.name) {
+          if (previus.name > next.name || previus.attack > next.attack) {
             return 1;
           }
-          if (previus.name < next.name) {
-            return -1;
-          }
-          return 0;
-        })
-        .sort((previus, next) => {
-          if (previus.attack > next.attack) {
-            return 1;
-          }
-          if (previus.attack < next.attack) {
+          if (previus.name < next.name || previus.attack < next.attack) {
             return -1;
           }
           return 0;
