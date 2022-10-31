@@ -1,14 +1,25 @@
 const axios = require("axios");
 const { Pokemon, Type } = require("../database/db");
 
+const { createClient } = require("redis");
+
 let DATA_API_DB = [];
+
+const client = createClient();
+
+client.on('error', (err) => console.log('Redis Client Error', err.message));
+
+client.connect();
+
 
 const findPokemonApi = async (pokeParam) => {
   try {
+   
     const listpokes = await axios.get(
       "https://pokeapi.co/api/v2/pokemon/" + pokeParam
     );
-    return {
+
+    const findPokemonApi = {
       id: listpokes.data.id,
       name: listpokes.data.name,
       hp: listpokes.data.stats[0].base_stat,
@@ -19,7 +30,10 @@ const findPokemonApi = async (pokeParam) => {
       weight: listpokes.data.weight,
       img: listpokes.data.sprites.other.home.front_default,
       Types: listpokes.data.types.map((t) => t.type.name),
-    };
+    }
+
+    return findPokemonApi;
+
   } catch (error) {
     console.log(error.message);
   }
@@ -36,28 +50,33 @@ const findPokemonDb = async (pokeParam) => {
   }
 };
 
-const listAllPokemonsApi = async () => {
+const listAllPokemonsApi= async () => {
   try {
+    const pokeRedis = await client.get('allPokemons')
+
+    if(pokeRedis) {return JSON.parse(pokeRedis)}
+
     const listPokeAxios = await axios.get(
       "https://pokeapi.co/api/v2/pokemon?limit=100"
     );
     let allPokes = [];
     await Promise.all(
       listPokeAxios.data.results.map((item) => {
-        const itemsUrl = item.url.split("/");
-        const id = itemsUrl[6];
-        let poke = findPokemonApi(id)
+        let poke = findPokemonApi(item.name)
           .then((p) => allPokes.push(p))
           .catch((e) => {});
         return poke;
       })
     );
     allPokes.sort((a, b) => a.id - b.id);
+
+    await client.set('allPokemons', JSON.stringify(allPokes));
+
     return allPokes;
   } catch (error) {
     console.log(error.message);
   }
-};
+}
 
 const listAllPokemonsDb = async () => {
   return await Pokemon.findAll({
@@ -81,14 +100,14 @@ const listAllPokemonsApiDb = async () => {
   }
 };
 
-const getByIdPokemon = async (idPokemon) => {
+const getByIdPokemon =  (idPokemon) => {
   try {
     if (!idPokemon) return;
     let pokemonFound = "";
     if (idPokemon.length > 8) {
-      pokemonFound = await DATA_API_DB.filter((poke) => poke.id === idPokemon);
+      pokemonFound =  DATA_API_DB.filter((poke) => poke.id === idPokemon);
     } else {
-      pokemonFound = await DATA_API_DB.filter(
+      pokemonFound =  DATA_API_DB.filter(
         (poke) => poke.id === Number(idPokemon)
       );
     }

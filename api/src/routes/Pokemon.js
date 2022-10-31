@@ -6,7 +6,7 @@ const router = Router();
 const cache= apicache.middleware;
 // ,cache("2 minutes")
 router
-  .get("/pokemons",cache("2 minutes"), getAllPokemons)
+  .get("/pokemons", getAllPokemons)
   .get("/pokemons/:idPokemon", getByIdPokemon)
   .post("/pokemons", createPokemon)
   .get("/types", getAllTypes)

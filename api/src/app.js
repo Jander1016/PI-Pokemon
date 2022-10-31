@@ -3,11 +3,14 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const routes = require('./routes/index.js');
+const responseTime = require("response-time")
 //const cors = require("cors");
 
 require('./database/db.js');
 
 const server = express();
+
+server.use(responseTime())
 
 server.name = 'API';
 //server.use(cors())
