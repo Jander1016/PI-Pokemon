@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-import SearchBar from "./SearchBar";
 import menu from "../images/menu.svg";
 
 export const NavBar = () => {

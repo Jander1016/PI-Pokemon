@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Loading } from "../pages/Loading";
 import Pokemon from "./Pokemon";
 import Pagination from "../helpers/Pagination";
@@ -22,8 +23,8 @@ const Pokemons = () => {
   const [items, setItems] = useState(12);
 
   const [sortPoke, setSortPoke] = useState("");
-  const [sortPokeAttack, setSortPokeAttack] = useState("");
-  const [sortPokeTypes, setSortPokeTypes] = useState("");
+  // const [sortPokeAttack, setSortPokeAttack] = useState("");
+  // const [sortPokeTypes, setSortPokeTypes] = useState("");
 
   const lastItem = currentPage * items;
   const firstItem = lastItem - items;
@@ -35,6 +36,7 @@ const Pokemons = () => {
   useEffect(() => {
     dispatch(allPokemons())
     dispatch(getTypesPokemon())
+    setCurrentPage(1);
   }, [dispatch]);
 
   const handlerFilterPokemons = (e) => {

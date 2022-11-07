@@ -62,11 +62,6 @@ const CreatePokemon = () => {
     }
   };
 
-  // const handleDelete=(e) =>{
-  //   e.preventDefault();
-  //   typePoke.filter(t=> t !== e.target.value)
-  // }
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
@@ -197,8 +192,9 @@ const CreatePokemon = () => {
             </select>
           </div>
           <div> 
-            <p>Type 1  <input type='text' name = 'type1' value={typePoke[0]} /></p>
-              <p>Type 2  <input type='text' name = 'type2' value={typePoke[1]} /></p>
+       
+            <p>Type 1  <input type='text' name = 'type1' value={typePoke[0]} autoComplete='false'/></p>
+              <p>Type 2  <input type='text' name = 'type2' value={typePoke[1]} autoComplete='false' /></p>
            </div>
          { error && (
            <ErrorMessage>

@@ -95,7 +95,7 @@ export default function reducer(state = initialSatate, action) {
       const dataAllPokemons3 = state.dataAllPokemons;
       const statusFilteredSort =
         action.payload === "all"
-          ?  state.dataAllPokemons
+          ? state.dataAllPokemons
           : action.payload === "desc"
           ? dataAllPokemons3.sort((previus, next) => {
               if (previus.name < next.name) {
@@ -120,19 +120,19 @@ export default function reducer(state = initialSatate, action) {
         pokemons: statusFilteredSort,
       };
     case FILTER_TYPES:
-      const dataPokemons = state.dataAllPokemons;
+      const dataPokemonsFilter = state.dataAllPokemons;
       const statusFilteredTypes =
         action.payload === "all"
-          ? dataPokemons
-          : dataPokemons.filter((poke) => poke.Types.includes(action.payload));
-
+          ? state.dataAllPokemons
+          : dataPokemonsFilter.filter((poke) => poke.Types[0]?.name ===action.payload || poke.Types[1]?.name ===action.payload || poke.Types.includes(action.payload));
       return {
         ...state,
         pokemons: statusFilteredTypes,
       };
     case FILTER_COMBINE:
       const dataCombinedPokemons = state.dataAllPokemons;
-      const statusFilteredCombined = dataCombinedPokemons
+
+      const filterCombinedOrderType = dataCombinedPokemons
         .sort((previus, next) => {
           if (previus.name > next.name || previus.attack > next.attack) {
             return 1;
@@ -145,7 +145,7 @@ export default function reducer(state = initialSatate, action) {
         .filter((pokes) => pokes.Types === action.payload);
       return {
         ...state,
-        pokemons: statusFilteredCombined
+        pokemons: filterCombinedOrderType 
       };
     default:
       return state;

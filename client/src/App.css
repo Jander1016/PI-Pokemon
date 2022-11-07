@@ -64,6 +64,7 @@ nav a:hover {
   width: 90%;
   margin: 0 auto;
   gap: 4em;
+  
 }
 
 .pokemon-card {
@@ -76,9 +77,11 @@ nav a:hover {
   border-radius: 18px;
   padding: 10px 10px;
   border: 1px solid rgb(45, 9, 206);
-  background-color: #f333;
+  /* background-color: #f333; */
   color: #fff;
   transition: all 0.2s ease-in-out;
+
+  backdrop-filter: blur(20px);
 }
 
 .pokemon-img-container {
@@ -93,6 +96,7 @@ nav a:hover {
 }
 
 .pokemon-img {
+  height: 200px;
   width:100%;
 }
 
@@ -148,12 +152,21 @@ nav a:hover {
   border-top-right-radius: 15px;
   background-size: cover;
   padding: 10px 10px;
+  height: 400px;
+  width: 400em;
 }
 
 .pokemon-img-detail:hover{
   transform: scale(1.5);
 	cursor: pointer;
 }
+
+.pokemon-status{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
 
 .pokemon-img-detail img{
   width: 300px;
