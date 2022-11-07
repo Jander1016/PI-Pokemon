@@ -3,12 +3,13 @@ require('dotenv').config();
 const { Pokemon, Type } = require("../database/db");
 
 const { createClient } = require("redis");
-const {DB_HOST} = process.env;
+const {DB_HOST,REDIS_PORT} = process.env;
 
 let DATA_API_DB = [];
 
 const client = createClient({
   host: DB_HOST,
+  port: REDIS_PORT
 });
 
 client.on('error', (err) => console.log('Redis Client Error', err.message));
