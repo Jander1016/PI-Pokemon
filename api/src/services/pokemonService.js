@@ -57,7 +57,7 @@ const listAllPokemonsApi= async () => {
     if(pokeRedis) {return JSON.parse(pokeRedis)}
 
     const listPokeAxios = await axios.get(
-      "https://pokeapi.co/api/v2/pokemon?limit=100"
+      "https://pokeapi.co/api/v2/pokemon?limit=160"
     );
     let allPokes = [];
     await Promise.all(
