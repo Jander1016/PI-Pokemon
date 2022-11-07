@@ -1,11 +1,15 @@
 const axios = require("axios");
+require('dotenv').config();
 const { Pokemon, Type } = require("../database/db");
 
 const { createClient } = require("redis");
+const {DB_HOST} = process.env;
 
 let DATA_API_DB = [];
 
-const client = createClient();
+const client = createClient({
+  host: DB_HOST,
+});
 
 client.on('error', (err) => console.log('Redis Client Error', err.message));
 
